@@ -1,0 +1,45 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class MouseCam : MonoBehaviour
+{
+    private GameObject player;
+    //here i control how much a player can look up down, etc and create depth  of perception via the degree values below 45, -45
+    private float minClamp = -45;
+    private float maxClamp = 45;
+
+    //public and private variables to adjust how the Camera rotates and actions in the gameview while playing and moving
+    public Vector2 rotation;
+    private Vector2 currentLookRot;
+    private Vector2 rotationV = new Vector2(0, 0);
+    public float lookSensitivity = 2;
+    public float lookSmoothDamp = 0.1f;
+
+ 
+    // Start is called before the first frame update
+    void Start()
+    {
+        // I access the player gameobject here
+        player = transform.parent.gameObject;        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // some player input from the mouse
+        rotation.y += Input.GetAxis("Mouse Y") * lookSensitivity;
+
+        //here i limit the ability to look up and down, mathf creates a range between to points -45 to 45
+        rotation.y = Mathf.Clamp(rotation.y, minClamp, maxClamp);
+
+        //rotate player around based on Mouse X position
+        player.transform.RotateAround(transform.position, Vector3.up, Input.GetAxis("Mouse X") * lookSensitivity);
+
+        // i smooth the current Y rotation for looking up/down and allow for smoother transitions 
+        currentLookRot.y = Mathf.SmoothDamp(currentLookRot.y, rotation.y, ref rotationV.y, lookSmoothDamp);
+
+        //i update the cam X rotation based on the values generated in game
+        transform.localEulerAngles = new Vector3(-currentLookRot.y, 0, 0);        
+    }
+}
