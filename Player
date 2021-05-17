@@ -1,0 +1,31 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    // public vars/access modifiers and headers for visuals and gameplay
+    [Header("Visuals")]
+    public Camera playerCamera;
+
+    [Header("GamePlay")]
+    public int initialHealth = 100;
+    public float knockBackForce = 10;
+    
+    // private/public vars thats going to store the health & values for me and getter and setter below which ref's the other/health var
+    private int health;
+    public int Health { get { return health; } }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+       
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+}
